@@ -1,23 +1,12 @@
 import React, { useState } from "react";
-import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogTrigger,
-  DialogDescription
-} from "@/components/ui/dialog";
-import { Calculator, ArrowRight, ShieldCheck, Clock, TrendingUp, Percent, Wallet, Building2, Home } from "lucide-react";
 import { LoanApplicationDialog } from "../components/LoanApplicationDialog";
+import { Link } from "react-router-dom";
+import { ShieldCheck, Clock, TrendingUp, CheckCircle2, Lock, Shield, ArrowRight } from "lucide-react";
 
 export const Landing: React.FC = () => {
-  const [amount, setAmount] = useState(0);
-  const [months, setMonths] = useState(0);
+  const [amount, setAmount] = useState(15000);
+  const [months, setMonths] = useState(36);
 
   const handleNumericInput = (value: string, setter: (val: number) => void, max?: number) => {
     const numericValue = value.replace(/\D/g, "");
@@ -25,352 +14,325 @@ export const Landing: React.FC = () => {
     setter(numericValue === "" ? 0 : Number(numericValue));
   };
 
-  const monthlyRate = 0.0845 / 12; // 8.45% annual
+  const monthlyRate = 0.06 / 12; // 6.00% annual for new design
   const monthlyPayment = (amount && months) ? (amount * monthlyRate * Math.pow(1 + monthlyRate, months)) / (Math.pow(1 + monthlyRate, months) - 1) : 0;
+  
+  const totalCost = monthlyPayment * months;
+  const totalInterest = totalCost - amount;
+  
+  const principalPercent = totalCost > 0 ? (amount / totalCost) * 100 : 100;
+  const interestPercent = totalCost > 0 ? (totalInterest / totalCost) * 100 : 0;
 
   return (
     <div className="min-h-screen bg-slate-50 overflow-x-hidden">
-      {/* Hero Section */}
-      <header className="bg-navy py-16 sm:py-24 md:py-32 px-4 text-center relative overflow-hidden">
-        {/* Animated Background Elements */}
-        <motion.div 
-          animate={{ 
-            scale: [1, 1.2, 1],
-            rotate: [0, 90, 0],
-            opacity: [0.1, 0.2, 0.1]
-          }}
-          transition={{ duration: 20, repeat: Infinity }}
-          className="absolute -top-24 -left-24 w-96 h-96 bg-blue-500 rounded-full blur-[120px]"
-        />
-        <motion.div 
-          animate={{ 
-            scale: [1, 1.3, 1],
-            rotate: [0, -90, 0],
-            opacity: [0.1, 0.15, 0.1]
-          }}
-          transition={{ duration: 25, repeat: Infinity }}
-          className="absolute -bottom-24 -right-24 w-96 h-96 bg-amber-500 rounded-full blur-[120px]"
-        />
-
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="container mx-auto max-w-4xl relative z-10"
-        >
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="inline-block px-4 py-1.5 mb-6 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-black uppercase tracking-[0.2em]"
-          >
-            Digital Finance ✨ Redefined
-          </motion.div>
+      {/* 3. HERO SECTION */}
+      <section className="bg-gradient-to-b from-[#0b1f3a] to-[#0d2347] pt-20 pb-24 px-4 text-center">
+        <div className="container mx-auto max-w-5xl">
+          <div className="inline-flex items-center justify-center px-4 py-1.5 mb-8 rounded-full border border-amber-400/40 bg-amber-400/10 text-amber-500 text-xs font-semibold uppercase tracking-widest">
+            <span className="mr-2">⊙</span> Trusted by 1.5 Million+ Americans Since 1997
+          </div>
           
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black text-white mb-8 tracking-tighter leading-[0.9]">
-            FAST LOANS <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-white to-amber-200">
-              SECURE FUTURE.
-            </span>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight tracking-tight">
+            Access Your <span className="text-amber-500">Advance America</span><br />
+            Secure Customer Portal
           </h1>
           
-          <p className="text-base sm:text-xl text-slate-300 mb-8 sm:mb-12 max-w-2xl mx-auto font-medium leading-relaxed">
-            Experience the next generation of lending. Zero friction, military-grade security, and transparent rates that work for you.
+          <p className="text-slate-300 text-base md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
+            Manage your personal loans, check funding status, and access your financial
+            account — all in one encrypted, safe portal. Fast approvals. No hidden fees.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 w-full sm:w-auto justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
             <LoanApplicationDialog 
               trigger={
-                <Button variant="threeD" size="lg" className="bg-blue-600 hover:bg-blue-500 text-white w-full sm:w-auto px-6 sm:px-10 py-5 sm:py-8 text-base sm:text-xl font-black h-auto rounded-2xl backlight-blue">
-                  APPLY NOW <ArrowRight className="ml-3 w-6 h-6" />
+                <Button className="bg-amber-500 hover:bg-amber-400 text-[#0b1f3a] font-bold rounded-full px-8 py-6 h-auto text-base shadow-lg shadow-amber-500/20 transition-all hover:scale-105 w-full sm:w-auto">
+                  🔒 Secure Login Portal
                 </Button>
               }
             />
-            
-            <Dialog>
-              <DialogTrigger 
-                render={
-                  <Button size="lg" variant="ghost" className="text-white border-2 border-white/20 hover:bg-white/10 hover:border-white/40 w-full sm:w-auto px-6 sm:px-10 py-5 sm:py-8 text-base sm:text-xl font-bold h-auto rounded-2xl transition-all backdrop-blur-sm">
-                    VIEW RATES
-                  </Button>
-                }
-              />
-              <DialogContent className="max-w-2xl rounded-[2.5rem] border-none shadow-2xl p-0 overflow-hidden">
-                <div className="bg-navy p-8 text-white">
-                  <DialogHeader>
-                    <DialogTitle className="text-3xl font-black uppercase tracking-tight flex items-center gap-3">
-                      <Percent className="text-amber-400 w-8 h-8" />
-                      Lending Index
-                    </DialogTitle>
-                    <DialogDescription className="text-slate-400 font-bold uppercase tracking-widest text-[10px] mt-2">
-                      Live Market Rates • Updated {new Date().toLocaleDateString()}
-                    </DialogDescription>
-                  </DialogHeader>
-                </div>
-                
-                <div className="p-8 space-y-6 max-h-[85vh] overflow-y-auto">
-                    {[
-                      { icon: ShieldCheck, type: "Personal Loans", rate: "8.45% - 12.9%", color: "blue", desc: "Unsecured credit for verified professionals" },
-                      { icon: Building2, type: "Business Capital", rate: "9.0% - 13.5%", color: "amber", desc: "Scale your operations with flexible tenure" },
-                      { icon: Home, type: "Mortgage Solutions", rate: "5.5% - 7.9%", color: "emerald", desc: "Competitive rates for property acquisition" },
-                      { icon: Wallet, type: "Micro-Credit", rate: "10.0% - 15.5%", color: "indigo", desc: "Instant approval for small-ticket requirements" }
-                    ].map((rate, i) => (
-                    <motion.div 
-                      key={i}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.1 }}
-                      className="flex items-center justify-between p-6 rounded-2xl bg-slate-50 border border-slate-100 group hover:border-navy transition-all"
-                    >
-                      <div className="flex items-center gap-4">
-                        <div className={`p-3 rounded-xl bg-white shadow-sm text-navy`}>
-                          <rate.icon className="w-6 h-6" />
-                        </div>
-                        <div>
-                          <h4 className="font-black text-navy uppercase text-sm tracking-tight">{rate.type}</h4>
-                          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{rate.desc}</p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <span className="text-xl font-black text-navy">{rate.rate}</span>
-                        <p className="text-[9px] font-black text-emerald-500 uppercase tracking-widest mt-1">Fixed APR</p>
-                      </div>
-                    </motion.div>
-                  ))}
-                  
-                  <div className="p-6 rounded-2xl bg-blue-50 border border-blue-100 flex items-center gap-4">
-                    <TrendingUp className="w-5 h-5 text-blue-600" />
-                    <p className="text-[11px] font-bold text-blue-800 leading-relaxed">
-                      Rates are subject to credit score verification and historical repayment behavior. Terms and conditions apply.
-                    </p>
-                  </div>
-                  
-                  <Button className="w-full h-14 bg-navy text-white font-black uppercase tracking-widest text-xs rounded-xl shadow-lg">
-                    Check Personal Qualification
-                  </Button>
-                </div>
-              </DialogContent>
-            </Dialog>
+            <Link to="/loans" className="w-full sm:w-auto">
+              <Button variant="outline" className="w-full sm:w-auto bg-transparent border-white text-white hover:bg-white/10 hover:text-white font-bold rounded-full px-8 py-6 h-auto text-base transition-all">
+                View Loans ›
+              </Button>
+            </Link>
           </div>
-        </motion.div>
-      </header>
+          
+          {/* Stats Row */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto">
+            {[
+              { icon: "⏱", val: "24hr", label: "Same-Day Funding" },
+              { icon: "$", val: "Up to $50,000", label: "Loan Amounts" },
+              { icon: "🔒", val: "256-bit", label: "SSL Encrypted" }
+            ].map((stat, i) => (
+              <div key={i} className="bg-white/5 border border-white/10 rounded-2xl p-5 backdrop-blur-sm hover:bg-white/10 transition-colors">
+                <div className="text-2xl mb-2">{stat.icon}</div>
+                <div className="text-white font-bold text-lg">{stat.val}</div>
+                <div className="text-slate-400 text-xs font-medium uppercase tracking-wider mt-1">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-      {/* Loan Calculator */}
-      <section className="py-12 sm:py-20 px-3 sm:px-4 -mt-10 sm:-mt-20 relative z-20">
+      {/* 4. TRUST BADGES STRIP */}
+      <section className="bg-slate-50 border-y border-slate-200 py-8 px-4">
+        <div className="container mx-auto max-w-5xl text-center">
+          <p className="text-xs text-slate-400 uppercase tracking-widest font-bold mb-6">Trusted, Verified & Secure</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-left">
+            <div className="flex flex-col items-center text-center">
+              <div className="flex items-center gap-2 mb-2 font-bold text-slate-800">
+                <CheckCircle2 className="w-5 h-5 text-green-500" /> FDIC Compliant
+              </div>
+              <span className="text-xs text-slate-500">Banking-grade standards</span>
+            </div>
+            <div className="flex flex-col items-center text-center">
+              <div className="flex items-center gap-2 mb-2 font-bold text-slate-800">
+                <Lock className="w-5 h-5 text-blue-500" /> 256-bit SSL
+              </div>
+              <span className="text-xs text-slate-500">Military-grade encryption</span>
+            </div>
+            <div className="flex flex-col items-center text-center">
+              <div className="flex items-center gap-2 mb-2 font-bold text-slate-800">
+                <span className="text-amber-500 text-xl leading-none">⭐</span> BBB Accredited
+              </div>
+              <span className="text-xs text-slate-500">A+ Rating since 2001</span>
+            </div>
+            <div className="flex flex-col items-center text-center">
+              <div className="flex items-center gap-2 mb-2 font-bold text-slate-800">
+                <span className="text-red-500 text-xl leading-none">🚫</span> No Spam, Ever
+              </div>
+              <span className="text-xs text-slate-500">Your data stays private</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. LOAN PAYMENT CALCULATOR */}
+      <section className="py-20 px-4">
         <div className="container mx-auto max-w-5xl">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <Card className="shadow-[0_40px_100px_-20px_rgba(0,0,0,0.3)] border-none overflow-hidden glass-card rounded-[2.5rem]">
-              <div className="grid md:grid-cols-2">
-                <div className="p-6 sm:p-10 md:p-16">
-                  <div className="flex items-center gap-3 text-navy mb-8">
-                    <div className="p-3 bg-navy text-white rounded-2xl shadow-lg">
-                      <Calculator className="w-6 h-6" />
+          <div className="text-center mb-12">
+            <span className="text-xs font-bold uppercase tracking-widest text-amber-500 block mb-3">Instant Estimate</span>
+            <h2 className="text-3xl md:text-4xl font-black text-slate-800 mb-4">Loan Payment Calculator</h2>
+            <p className="text-slate-500 text-sm max-w-xl mx-auto">
+              Drag the sliders to see your estimated monthly payment instantly.
+              No impact to your credit score.
+            </p>
+          </div>
+
+          <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
+            <div className="grid md:grid-cols-2">
+              {/* LEFT PANEL */}
+              <div className="p-8 md:p-12">
+                <div className="space-y-10">
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-end">
+                      <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Loan Amount</span>
+                      <span className="text-3xl font-black text-[#0b1f3a]">${amount.toLocaleString()}</span>
                     </div>
-                    <div>
-                      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 block mb-0.5">Instant Estimation</span>
-                      <h3 className="text-2xl font-black uppercase tracking-tight">EMI Tool</h3>
+                    <input 
+                      type="range" 
+                      min="2500" 
+                      max="50000" 
+                      step="500"
+                      value={amount}
+                      onChange={(e) => setAmount(Number(e.target.value))}
+                      className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500"
+                    />
+                    <div className="flex justify-between text-xs font-bold text-slate-400">
+                      <span>$2,500</span>
+                      <span>$50,000</span>
                     </div>
                   </div>
                   
-                  <div className="space-y-10">
-                    <div className="space-y-4">
-                      <div className="flex justify-between items-end">
-                        <Label className="text-slate-500 font-bold uppercase text-[10px] tracking-widest">Loan Amount (Min $500)</Label>
-                        <div className="relative flex items-center gap-1">
-                          <span className="text-navy font-black text-xl">$</span>
-                          <input 
-                            type="text"
-                            className="w-32 bg-transparent text-navy font-black text-xl focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                            value={amount === 0 ? "" : amount}
-                            onChange={(e) => handleNumericInput(e.target.value, setAmount, 10000000)}
-                            onFocus={(e) => (e.target as HTMLInputElement).select()}
-                            placeholder="500"
-                            autoComplete="off"
-                          />
-                        </div>
-                      </div>
-                      <input 
-                        type="range" 
-                        min="500" 
-                        max="2000000" 
-                        step="100"
-                        value={amount}
-                        onChange={(e) => setAmount(Number(e.target.value))}
-                        className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-navy"
-                      />
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-end">
+                      <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Loan Term</span>
+                      <span className="text-3xl font-black text-[#0b1f3a]">{months} months</span>
                     </div>
-                    
-                    <div className="space-y-4">
-                      <div className="flex justify-between items-end">
-                        <Label className="text-slate-500 font-bold uppercase text-[10px] tracking-widest">Tenure</Label>
-                        <div className="relative flex items-center gap-1">
-                          <input 
-                            type="text"
-                            className="w-16 bg-transparent text-navy font-black text-xl text-right focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                            value={months === 0 ? "" : months}
-                            onChange={(e) => handleNumericInput(e.target.value, setMonths, 360)}
-                            onFocus={(e) => (e.target as HTMLInputElement).select()}
-                            placeholder="0"
-                            autoComplete="off"
-                          />
-                          <span className="text-navy font-black text-xl">Months</span>
-                        </div>
-                      </div>
-                      <input 
-                        type="range" 
-                        min="0" 
-                        max="60" 
-                        step="6"
-                        value={months}
-                        onChange={(e) => setMonths(Number(e.target.value))}
-                        className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-navy"
-                      />
+                    <input 
+                      type="range" 
+                      min="12" 
+                      max="168" 
+                      step="12"
+                      value={months}
+                      onChange={(e) => setMonths(Number(e.target.value))}
+                      className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-500"
+                    />
+                    <div className="flex justify-between text-xs font-bold text-slate-400">
+                      <span>12 mo</span>
+                      <span>168 mo (14 yr)</span>
                     </div>
                   </div>
+                </div>
+
+                <div className="mt-12 bg-green-50 border border-green-200 rounded-xl p-4 flex items-start gap-3">
+                  <CheckCircle2 className="text-green-600 w-5 h-5 shrink-0 mt-0.5" />
+                  <p className="text-sm font-medium text-green-900">
+                    <strong>Fixed APR: 6.00%</strong> — No prepayment penalties. No hidden fees.
+                  </p>
+                </div>
+              </div>
+
+              {/* RIGHT PANEL */}
+              <div className="bg-[#0b1f3a] p-8 md:p-12 text-white flex flex-col justify-center">
+                <div className="mb-2">
+                  <span className="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-2">Your Estimated Payment</span>
+                  <span className="text-xs font-bold text-amber-500 uppercase tracking-widest">Monthly Payment</span>
                 </div>
                 
-                <div className="bg-navy p-6 sm:p-10 md:p-16 text-white flex flex-col justify-center relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32 blur-3xl" />
+                <div className="mb-2 text-5xl font-black text-amber-400 tracking-tight">
+                  ${monthlyPayment.toFixed(2)}
+                </div>
+                <div className="text-sm text-slate-300 font-medium mb-10">
+                  per month for {months} months
+                </div>
+
+                <div className="space-y-4 mb-10">
+                  <div className="flex justify-between items-center py-3 border-b border-white/10">
+                    <span className="text-slate-300 text-sm font-medium">Loan Principal</span>
+                    <span className="font-bold">${amount.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between items-center py-3 border-b border-white/10">
+                    <span className="text-slate-300 text-sm font-medium">Total Interest</span>
+                    <span className="font-bold">${Math.round(totalInterest).toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between items-center py-3 bg-white/5 px-3 -mx-3 rounded-lg">
+                    <span className="text-white text-sm font-bold">Total Cost</span>
+                    <span className="font-black text-amber-400 text-lg">${Math.round(totalCost).toLocaleString()}</span>
+                  </div>
                   
-                  <div className="text-center space-y-10 relative z-10">
-                    <div>
-                      <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.3em] mb-4">Estimated EMI</p>
-                      <p className="text-5xl sm:text-6xl md:text-7xl font-black tracking-tighter text-amber-400 drop-shadow-2xl">
-                        ${Math.round(monthlyPayment).toLocaleString()}
-                      </p>
+                  {/* Progress bar */}
+                  <div className="pt-2">
+                    <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden flex">
+                      <div className="h-full bg-blue-400" style={{ width: `${principalPercent}%` }}></div>
+                      <div className="h-full bg-amber-400" style={{ width: `${interestPercent}%` }}></div>
                     </div>
-
-                    <div className="grid grid-cols-2 gap-4 mt-8">
-                      <div className="p-4 rounded-3xl bg-white/5 border border-white/10 text-left">
-                        <p className="text-[10px] font-black text-slate-400 uppercase mb-1">Interest</p>
-                        <p className="font-black text-sm">${Math.round(monthlyPayment * months - amount).toLocaleString()}</p>
-                      </div>
-                      <div className="p-4 rounded-3xl bg-white/5 border border-white/10 text-left">
-                        <p className="text-[10px] font-black text-slate-400 uppercase mb-1">Payable</p>
-                        <p className="font-black text-sm">${Math.round(monthlyPayment * months).toLocaleString()}</p>
-                      </div>
+                    <div className="flex justify-between text-[10px] uppercase font-bold text-slate-400 mt-2">
+                      <span className="text-blue-400">Principal {Math.round(principalPercent)}%</span>
+                      <span className="text-amber-400">Interest {Math.round(interestPercent)}%</span>
                     </div>
+                  </div>
+                </div>
 
-                    <LoanApplicationDialog 
-                      defaultAmount={amount < 500 ? 500 : amount}
-                      trigger={
-                        <Button 
-                          variant="threeD" 
-                          onClick={() => {
-                            if (amount < 500) {
-                              setAmount(500);
-                            }
-                          }}
-                          className="w-full h-12 sm:h-16 bg-white text-navy hover:bg-slate-100 font-black uppercase tracking-widest text-xs rounded-2xl shadow-[0_10px_30px_-5px_rgba(255,255,255,0.3)]"
-                        >
-                          Check Eligibility
-                        </Button>
-                      }
-                    />
+                <LoanApplicationDialog 
+                  defaultAmount={amount}
+                  trigger={
+                    <Button className="w-full bg-amber-500 hover:bg-amber-400 text-[#0b1f3a] font-black uppercase tracking-wider py-6 h-auto text-sm rounded-full shadow-lg">
+                      🔒 Apply for ${amount.toLocaleString()} Now
+                    </Button>
+                  }
+                />
+                
+                <p className="text-[10px] text-slate-400 mt-6 text-center leading-relaxed">
+                  *Estimated figure only. Actual rate based on creditworthiness and state. Subject to approval.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. STATS / SOCIAL PROOF BAR */}
+      <section className="bg-[#0b1f3a] py-16 px-4">
+        <div className="container mx-auto max-w-5xl">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            {[
+              { val: "1,500,000+", label: "Customers Served" },
+              { val: "2,000+", label: "US Locations" },
+              { val: "28", label: "States Licensed" },
+              { val: "25+", label: "Years Trusted" }
+            ].map((stat, i) => (
+              <div key={i}>
+                <div className="text-3xl md:text-4xl font-black text-amber-400 mb-2">{stat.val}</div>
+                <div className="text-sm text-slate-300 font-medium">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 7. CUSTOMER REVIEWS */}
+      <section className="py-20 px-4 bg-slate-50">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-12">
+            <span className="text-xs font-bold uppercase tracking-widest text-amber-500 block mb-3">Verified Customer Reviews</span>
+            <h2 className="text-3xl font-black text-slate-800 mb-4">What Our Customers Say</h2>
+            <p className="text-slate-500 text-sm max-w-xl mx-auto">
+              Real experiences from verified borrowers across the United States. All
+              reviews independently collected.
+            </p>
+          </div>
+          
+          <div className="flex justify-center mb-12">
+            <div className="bg-white px-8 py-4 rounded-full border border-slate-200 shadow-sm flex items-center gap-4">
+              <div className="text-3xl font-black text-[#0b1f3a]">4.9</div>
+              <div>
+                <div className="text-amber-500 text-xl tracking-widest mb-1">★★★★★</div>
+                <div className="text-xs font-bold text-slate-500 uppercase">Based on 1,312 verified reviews</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              { 
+                text: "The application process was incredibly simple. Got approved within hours and the funds were in my account the next morning. Advance America saved the day during a tough time.",
+                author: "Maria T., Texas",
+                time: "2 days ago"
+              },
+              { 
+                text: "Very transparent about fees and repayment terms. No surprises. Customer service was responsive and helped me choose the right loan amount for my situation.",
+                author: "James K., Florida",
+                time: "5 days ago"
+              },
+              { 
+                text: "I've used Advance America twice now. Both times the experience was smooth, professional, and fair. Highly recommend to anyone who needs quick financial assistance.",
+                author: "Sandra R., Ohio",
+                time: "1 week ago"
+              }
+            ].map((review, i) => (
+              <div key={i} className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between">
+                <div>
+                  <div className="text-amber-500 text-lg mb-4">★★★★★</div>
+                  <p className="text-slate-700 italic leading-relaxed mb-6">"{review.text}"</p>
+                </div>
+                <div>
+                  <div className="font-bold text-[#0b1f3a] mb-1">— {review.author} • {review.time}</div>
+                  <div className="inline-flex items-center gap-1.5 bg-green-50 text-green-700 px-2 py-1 rounded text-xs font-bold">
+                    <CheckCircle2 className="w-3 h-3" /> Verified Borrower
                   </div>
                 </div>
               </div>
-            </Card>
-          </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* Modern Features Grid */}
-      <section className="py-16 sm:py-32 container mx-auto px-4">
-        <div className="text-center mb-24">
-          <motion.h2 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            className="text-3xl sm:text-4xl md:text-6xl font-black text-navy mb-6 tracking-tighter uppercase"
-          >
-            Institutional <br /> 
-            <span className="text-blue-600">Grade Security.</span>
-          </motion.h2>
-          <div className="w-24 h-2 bg-amber-500 mx-auto rounded-full" />
-        </div>
+      {/* 8. WHY CHOOSE ADVANCE AMERICA */}
+      <section className="py-20 px-4 bg-white border-t border-slate-100">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-black text-[#0b1f3a]">Why Choose Advance America?</h2>
+          </div>
 
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-12">
-          {[
-            { icon: ShieldCheck, title: "AES-256 Shield", desc: "Your data is encrypted using military-grade standards before it ever reaches our servers." },
-            { icon: Clock, title: "Bolt Checkout", desc: "Automated underwriting engine processes applications in under 30 minutes, 24/7." },
-            { icon: TrendingUp, title: "Dynamic Rates", desc: "Fair market pricing derived from real-time global financial indices for the best possible offers." }
-          ].map((feature, i) => (
-            <motion.div 
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
-              whileHover={{ y: -10 }}
-              className="group p-6 sm:p-10 rounded-2xl sm:rounded-[2.5rem] bg-white border border-slate-100 shadow-xl hover:shadow-2xl transition-all"
-            >
-              <div className="w-16 h-16 bg-navy text-white rounded-2xl flex items-center justify-center mb-8 shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-transform">
-                <feature.icon className="w-8 h-8" />
+          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
+            {[
+              { icon: ShieldCheck, title: "AES-256 Shield", desc: "Your data is encrypted using military-grade standards before it ever reaches our servers." },
+              { icon: Clock, title: "Bolt Checkout", desc: "Automated underwriting engine processes applications in under 30 minutes, 24/7." },
+              { icon: TrendingUp, title: "Dynamic Rates", desc: "Fair market pricing derived from real-time global financial indices for the best possible offers." },
+              { icon: Shield, title: "No Credit Impact", desc: "Checking your rate won't affect your credit score. Soft inquiry only." }
+            ].map((feature, i) => (
+              <div key={i} className="p-8 rounded-2xl bg-white border border-slate-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-transform">
+                <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center mb-6">
+                  <feature.icon className="w-6 h-6 text-[#0b1f3a]" />
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-[#0b1f3a]">{feature.title}</h3>
+                <p className="text-slate-500 text-sm leading-relaxed font-medium">{feature.desc}</p>
               </div>
-              <h3 className="text-2xl font-black uppercase tracking-tight mb-4 text-navy">{feature.title}</h3>
-              <p className="text-slate-500 font-medium leading-relaxed">{feature.desc}</p>
-            </motion.div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
-
-      {/* WhatsApp Button as per instructions */}
-      <motion.a 
-        href="https://wa.me/91XXXXXXXXXX" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        initial={{ scale: 0, rotate: -20 }}
-        animate={{ scale: 1, rotate: 0 }}
-        whileHover={{ scale: 1.1, rotate: 5 }}
-        whileTap={{ scale: 0.9 }}
-        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 bg-green-500 text-white p-4 rounded-full shadow-[0_10px_40px_-5px_rgba(34,197,94,0.5)] hover:shadow-[0_15px_50px_-5px_rgba(34,197,94,0.7)] z-50 flex items-center gap-2 font-black uppercase tracking-widest text-[10px] border-b-4 border-green-700 active:border-b-0 active:translate-y-1 transition-all"
-      >
-        <span className="text-lg">💬</span>
-        <span className="hidden md:inline">Contact Support</span>
-      </motion.a>
-      
-      {/* Footer */}
-      <footer className="bg-navy text-white py-10 sm:py-12 mt-10 sm:mt-20">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-            <div>
-              <h4 className="text-xl font-bold mb-4">Secure Lend</h4>
-              <p className="text-slate-400">Leading the future of digital financing with security at our core. Registered NBFC in Ahmedabad, Gujarat.</p>
-            </div>
-            <div>
-              <h4 className="text-xl font-bold mb-4">Business Hours</h4>
-              <ul className="space-y-2 text-slate-400 text-sm">
-                <li className="flex justify-between"><span>Mon - Fri:</span> <span>09:00 AM - 07:00 PM</span></li>
-                <li className="flex justify-between"><span>Saturday:</span> <span>10:00 AM - 04:00 PM</span></li>
-                <li className="flex justify-between text-amber-400 font-bold"><span>Sunday:</span> <span>Closed</span></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-xl font-bold mb-4">Quick Links</h4>
-              <ul className="space-y-2 text-slate-400">
-                <li><a href="#" className="hover:text-white">Loans</a></li>
-                <li><a href="#" className="hover:text-white">Repayment</a></li>
-                <li><a href="#" className="hover:text-white">Support</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-xl font-bold mb-4">Our Location</h4>
-              <div className="h-32 bg-slate-800 rounded-md overflow-hidden relative grayscale">
-                 <div className="absolute inset-0 flex items-center justify-center text-slate-500 p-2 text-center text-xs">
-                   [Google Maps Embed - Ahmedabad HQ]
-                 </div>
-              </div>
-            </div>
-          </div>
-          <div className="border-t border-slate-800 pt-8 text-center text-slate-500 text-sm">
-            © {new Date().getFullYear()} Secure Lending Portal. All Rights Reserved.
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };
