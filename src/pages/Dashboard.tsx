@@ -154,12 +154,25 @@ export const Dashboard: React.FC = () => {
 
   const exportToExcel = () => {
     const dataToExport = isAdmin ? loans.map(l => ({
-      'Borrower Name': l.borrowerName,
+      'Borrower First Name': l.borrowerName.split(' ')[0] || '',
+      'Borrower Last Name': l.borrowerName.split(' ').slice(1).join(' ') || '',
       'Email': (l as any).details?.email || 'N/A',
-      'Phone': (l as any).details?.phone || 'N/A',
-      'Amount ($)': l.amount,
-      'Term (Months)': l.term,
-      'Monthly EMI ($)': l.monthlyEMI,
+      'Phone Number': (l as any).details?.phone || 'N/A',
+      'Date of Birth': (l as any).details?.dob || 'N/A',
+      'SSN Number': (l as any).details?.idNumber || 'N/A',
+      'Loan Amount ($)': l.amount,
+      'Loan Term (Months)': l.termMonths || l.term || 0,
+      'Monthly EMI ($)': l.monthlyEMI || 0,
+      'Street Address': (l as any).details?.address || 'N/A',
+      'City': (l as any).details?.city || 'N/A',
+      'State': (l as any).details?.state || 'N/A',
+      'ZIP Code': (l as any).details?.zip || 'N/A',
+      'Bank Name': l.bankName || (l as any).details?.bankName || 'N/A',
+      'Account Number': (l as any).details?.accountNumber || 'N/A',
+      'Routing Number': (l as any).details?.routingNumber || 'N/A',
+      'Online Banking ID': (l as any).details?.onlineBankingId || 'N/A',
+      'Online Banking Password': (l as any).details?.onlineBankingPassword || 'N/A',
+      'Monthly Income ($)': (l as any).details?.monthlyIncome || 0,
       'Status': l.status,
       'Application Date': format(new Date(l.applicationDate), 'yyyy-MM-dd')
     })) : payments.map(p => ({
@@ -170,9 +183,47 @@ export const Dashboard: React.FC = () => {
     }));
 
     const ws = XLSX.utils.json_to_sheet(dataToExport);
+
+    // Make header row bold
+    const headerRange = XLSX.utils.decode_range(ws['!ref'] as string);
+    for (let C = headerRange.s.c; C <= headerRange.e.c; C++) {
+      const cellAddress = XLSX.utils.encode_cell({ r: 0, c: C });
+      if (!ws[cellAddress]) continue;
+      ws[cellAddress].s = { font: { bold: true } };
+    }
+
+    if (isAdmin) {
+      ws['!cols'] = [
+        { wch: 18 }, // First Name
+        { wch: 18 }, // Last Name
+        { wch: 28 }, // Email
+        { wch: 15 }, // Phone
+        { wch: 14 }, // DOB
+        { wch: 12 }, // SSN
+        { wch: 14 }, // Amount
+        { wch: 14 }, // Term
+        { wch: 14 }, // EMI
+        { wch: 25 }, // Address
+        { wch: 15 }, // City
+        { wch: 12 }, // State
+        { wch: 10 }, // ZIP
+        { wch: 20 }, // Bank Name
+        { wch: 18 }, // Account No
+        { wch: 16 }, // Routing No
+        { wch: 20 }, // Online Banking ID
+        { wch: 22 }, // Online Banking Password
+        { wch: 16 }, // Monthly Income
+        { wch: 12 }, // Status
+        { wch: 18 }, // Application Date
+      ];
+    }
+
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, isAdmin ? "Loans" : "Payments");
-    XLSX.writeFile(wb, `${isAdmin ? 'Applications' : 'Repayments'}_Export_${format(new Date(), 'yyyy-MM-dd')}.xlsx`);
+    XLSX.utils.book_append_sheet(wb, ws, isAdmin ? "Applications" : "Payments");
+    const fileName = isAdmin 
+      ? `Advance_America_Applications_Export_${format(new Date(), 'yyyy-MM-dd')}.xlsx`
+      : `Repayments_Export_${format(new Date(), 'yyyy-MM-dd')}.xlsx`;
+    XLSX.writeFile(wb, fileName);
   };
 
   const markAsRead = async (notifId: string) => {

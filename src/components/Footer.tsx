@@ -76,13 +76,6 @@ export const Footer: React.FC = () => {
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-xl">📧</span>
-                <div>
-                  <span className="block text-white font-bold">support@advanceamerica.net</span>
-                  <span className="text-xs">24/7 email support</span>
-                </div>
-              </li>
-              <li className="flex items-start gap-3">
                 <span className="text-xl">🏢</span>
                 <div className="text-xs">
                   <span className="block">Mon–Fri: 8am–8pm ET</span>
