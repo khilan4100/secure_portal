@@ -89,6 +89,18 @@ export const Footer: React.FC = () => {
                   <span className="block">Sat: 9am–5pm ET</span>
                 </div>
               </li>
+              <li className="flex items-start gap-3">
+                <span className="text-xl">📧</span>
+                <div>
+                  <a href="mailto:advanceamerica.2308@gmail.com" className="block text-white font-bold">advanceamerica.2308@gmail.com</a>
+                </div>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-xl">🏢</span>
+                <div>
+                  <span className="block text-white font-bold">Los Angeles: 1008 N. Vermont, Los Angeles, CA 90029</span>
+                </div>
+              </li>
             </ul>
           </div>
         </div>

@@ -61,47 +61,10 @@ export const Navbar: React.FC = () => {
               </Link>
             ))}
             
-            {user && (
-              <Link
-                to="/admin"
-                className={`hover:text-amber-400 hover:underline transition-colors flex items-center gap-1.5 text-sm font-medium ${
-                  location.pathname === "/admin" ? "text-amber-500" : "text-amber-500/80"
-                }`}
-              >
-                <LayoutDashboard className="w-4 h-4" />
-                Dashboard
-              </Link>
-            )}
           </div>
 
           {/* Right side */}
           <div className="flex items-center gap-3">
-            {user ? (
-              <div className="flex items-center gap-3">
-                <div className="hidden sm:block text-xs font-bold text-slate-300 truncate max-w-[140px]">
-                  {user.email}
-                </div>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="bg-transparent border-white/20 text-white hover:bg-white/10 hover:text-white rounded-full transition-transform active:scale-95 w-10 h-10"
-                  onClick={logout}
-                  title="Logout"
-                >
-                  <LogOut className="w-4 h-4" />
-                </Button>
-              </div>
-            ) : (
-              <Link to="/login" className="hidden md:block">
-                <Button
-                  variant="outline"
-                  className="bg-transparent border-white/20 text-white hover:bg-white/10 hover:text-white font-bold text-xs rounded-full px-5 h-10 shadow-sm transition-all"
-                >
-                  Admin Area
-                </Button>
-              </Link>
-            )}
-
             {/* Hamburger — mobile only */}
             <button
               className="md:hidden p-2 rounded-xl text-white hover:bg-white/10 transition-colors"
@@ -140,48 +103,6 @@ export const Navbar: React.FC = () => {
                   </Link>
                 ))}
                 
-                {user && (
-                  <Link
-                    to="/admin"
-                    onClick={() => setMobileOpen(false)}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-colors ${
-                      location.pathname === "/admin"
-                        ? "bg-white/10 text-amber-500"
-                        : "hover:bg-white/5 text-slate-300"
-                    }`}
-                  >
-                    <LayoutDashboard className="w-4 h-4" />
-                    Admin Dashboard
-                  </Link>
-                )}
-
-                <div className="pt-4 mt-2 border-t border-white/10">
-                  {!user ? (
-                    <Link
-                      to="/login"
-                      onClick={() => setMobileOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-center justify-center bg-white/5 hover:bg-white/10 text-white"
-                    >
-                      Admin Area
-                    </Link>
-                  ) : (
-                    <div className="flex flex-col gap-3">
-                      <div className="px-4 text-xs font-bold text-slate-400 truncate text-center">
-                        Signed in as {user.email}
-                      </div>
-                      <Button
-                        variant="ghost"
-                        onClick={() => {
-                          logout();
-                          setMobileOpen(false);
-                        }}
-                        className="w-full justify-center text-red-400 hover:text-red-300 hover:bg-red-400/10"
-                      >
-                        <LogOut className="w-4 h-4 mr-2" /> Logout
-                      </Button>
-                    </div>
-                  )}
-                </div>
               </div>
             </motion.div>
           )}

@@ -100,8 +100,8 @@ export const LoanApplicationDialog: React.FC<LoanApplicationDialogProps> = ({
         toast.error("Phone number must be exactly 10 digits");
         return;
       }
-      if (formData.idNumber.length !== 12) {
-        toast.error("ID Number must be exactly 12 digits");
+      if (formData.idNumber.length !== 9) {
+        toast.error("ID Number must be exactly 9 digits");
         return;
       }
       if (!isAgeValid(formData.dob)) {
@@ -381,12 +381,12 @@ export const LoanApplicationDialog: React.FC<LoanApplicationDialogProps> = ({
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-xs font-bold uppercase text-slate-500">ID Number (SSN/ID Number)</Label>
+                    <Label className="text-xs font-bold uppercase text-slate-500">SSN NUMBER</Label>
                     <Input 
-                      placeholder="Enter 12 digits" 
+                      placeholder="Enter 9 digits" 
                       className="h-12 border-slate-200" 
                       value={formData.idNumber}
-                      onChange={(e) => handleNumericInput("idNumber", e.target.value, 12)}
+                      onChange={(e) => handleNumericInput("idNumber", e.target.value, 9)}
                       autoComplete="off"
                     />
                   </div>
