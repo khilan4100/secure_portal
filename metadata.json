@@ -1,0 +1,6 @@
+{
+  "name": "Secure Lending Portal",
+  "description": "A professional platform for managing loan applications, tracking payment schedules, and monitoring financial analytics securely.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
