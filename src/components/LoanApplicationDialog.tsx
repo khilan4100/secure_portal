@@ -32,7 +32,7 @@ import {
   Lock
 } from "lucide-react";
 import { useAuth } from "../lib/AuthContext";
-import { addLoan, addNotification } from "../lib/store";
+import { insertLoan, insertNotification } from "../lib/db";
 import { toast } from "sonner";
 
 interface LoanApplicationDialogProps {
@@ -154,34 +154,35 @@ export const LoanApplicationDialog: React.FC<LoanApplicationDialogProps> = ({
     return Math.round(emi);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setLoading(true);
     try {
       const borrowerId = user?.uid || "guest_" + Math.random().toString(36).substring(7);
       
-      addLoan({
-        borrowerId: borrowerId,
-        borrowerName: `${formData.firstName} ${formData.lastName}`,
-        amount: Number(formData.amount),
-        termMonths: Number(formData.term),
-        term: Number(formData.term),
-        interestRate: 8.45,
-        status: "pending",
-        totalPayable: calculateEMI() * formData.term,
-        remainingBalance: calculateEMI() * formData.term,
-        nextPaymentDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-        applicationDate: new Date().toISOString(),
-        monthlyEMI: calculateEMI(),
-        details: { ...formData, email: formData.email || "guest@example.com" }
-      } as any);
+      const monthlyEMI = calculateEMI();
 
-      addNotification({
-        userId: "admin",
-        title: "New Application Received",
-        message: `A new loan application from ${formData.firstName} ${formData.lastName} for $${Number(formData.amount).toLocaleString()} is waiting for review.`,
-        type: "info",
-        read: false,
-        createdAt: new Date().toISOString()
+      await insertLoan({
+        borrowerId:       borrowerId,
+        borrowerName:     `${formData.firstName} ${formData.lastName}`,
+        amount:           Number(formData.amount),
+        termMonths:       Number(formData.term),
+        interestRate:     8.45,
+        status:           "pending",
+        totalPayable:     monthlyEMI * Number(formData.term),
+        remainingBalance: monthlyEMI * Number(formData.term),
+        nextPaymentDate:  new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+        applicationDate:  new Date().toISOString(),
+        monthlyEMI:       monthlyEMI,
+        details:          { ...formData, email: formData.email || "guest@example.com" },
+      });
+
+      await insertNotification({
+        userId:    "admin",
+        title:     "New Application Received",
+        message:   `A new loan application from ${formData.firstName} ${formData.lastName} for $${Number(formData.amount).toLocaleString()} is waiting for review.`,
+        type:      "info",
+        read:      false,
+        createdAt: new Date().toISOString(),
       });
 
       toast.success("Application submitted successfully!");

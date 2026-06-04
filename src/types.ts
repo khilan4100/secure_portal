@@ -23,6 +23,10 @@ export interface Loan {
   nextPaymentDate: string;
   applicationDate: string;
   approvedAt?: string;
+  monthlyEMI?: number;
+  details?: any;
+  term?: number;
+  bankName?: string;
 }
 
 export type PaymentStatus = "scheduled" | "paid" | "late" | "missed";

@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../lib/AuthContext";
-import { getLoans, getPayments, getNotifications, updateLoanStatus, markNotificationRead } from "../lib/store";
+import {
+  fetchLoans,
+  fetchPayments,
+  fetchNotifications,
+  updateLoan,
+  markNotificationRead,
+  subscribeToLoans,
+  subscribeToPayments,
+  subscribeToNotifications,
+} from "../lib/db";
 import { Loan, Payment, Notification, AnalyticsSummary } from "../types";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -68,18 +77,26 @@ export const Dashboard: React.FC = () => {
     if (!user) return;
 
     const isAdmin = profile?.role === "admin";
+    const uid = user.uid as string;
 
-    const allLoans = getLoans();
-    const allPayments = getPayments();
-    const allNotifs = getNotifications();
+    fetchLoans(isAdmin, uid).then(setLoans).catch(console.error);
+    fetchPayments(isAdmin, uid).then(setPayments).catch(console.error);
+    fetchNotifications(isAdmin, uid).then(setNotifications).catch(console.error);
 
-    setLoans(isAdmin ? allLoans : allLoans.filter((l) => l.borrowerId === user.uid));
-    setPayments(isAdmin ? allPayments : allPayments.filter((p) => p.borrowerId === user.uid));
-    setNotifications(isAdmin ? allNotifs : allNotifs.filter((n) => n.userId === user.uid));
+    const unsubLoans    = subscribeToLoans(isAdmin, uid, setLoans);
+    const unsubPayments = subscribeToPayments(isAdmin, uid, setPayments);
+    const unsubNotifs   = subscribeToNotifications(isAdmin, uid, setNotifications);
 
     fetch("/api/analytics/summary")
       .then((res) => res.json())
-      .then((data) => setAnalytics(data));
+      .then((data) => setAnalytics(data))
+      .catch(console.error);
+
+    return () => {
+      unsubLoans();
+      unsubPayments();
+      unsubNotifs();
+    };
   }, [user, profile]);
 
   const isAdmin = profile?.role === "admin";
@@ -158,19 +175,27 @@ export const Dashboard: React.FC = () => {
     XLSX.writeFile(wb, `${isAdmin ? 'Applications' : 'Repayments'}_Export_${format(new Date(), 'yyyy-MM-dd')}.xlsx`);
   };
 
-  const markAsRead = (notifId: string) => {
-    markNotificationRead(notifId);
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === notifId ? { ...n, read: true } : n))
-    );
+  const markAsRead = async (notifId: string) => {
+    try {
+      await markNotificationRead(notifId);
+      setNotifications((prev) =>
+        prev.map((n) => (n.id === notifId ? { ...n, read: true } : n))
+      );
+    } catch (error) {
+      console.error("Error marking notification as read:", error);
+    }
   };
 
-  const updateApplicationStatus = (loanId: string, status: "active" | "rejected") => {
-    updateLoanStatus(loanId, status);
-    setLoans((prev) =>
-      prev.map((l) => (l.id === loanId ? { ...l, status } : l))
-    );
-    setSelectedLoan(null);
+  const updateApplicationStatus = async (loanId: string, status: "active" | "rejected") => {
+    try {
+      await updateLoan(loanId, status);
+      setLoans((prev) =>
+        prev.map((l) => (l.id === loanId ? { ...l, status } : l))
+      );
+      setSelectedLoan(null);
+    } catch (error) {
+      console.error("Error updating application status:", error);
+    }
   };
 
   const getAiRiskAssessment = async () => {
