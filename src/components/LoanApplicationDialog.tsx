@@ -227,7 +227,7 @@ export const LoanApplicationDialog: React.FC<LoanApplicationDialogProps> = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger render={trigger || <Button>Apply Now</Button>} />
-      <DialogContent className="max-w-xl p-0 overflow-hidden border-none shadow-2xl bg-white rounded-xl h-[90vh] flex flex-col">
+      <DialogContent className="max-w-2xl w-[calc(100vw-16px)] sm:w-full max-h-[90vh] overflow-y-auto p-0 overflow-hidden border-none shadow-2xl bg-white rounded-xl flex flex-col">
         <DialogHeader className="bg-navy p-4 flex flex-row items-center justify-between text-white space-y-0 shrink-0">
           <div className="flex items-center gap-3">
              <div className="bg-white/10 p-1.5 rounded-lg border border-white/10">
@@ -240,18 +240,18 @@ export const LoanApplicationDialog: React.FC<LoanApplicationDialogProps> = ({
         </DialogHeader>
 
         <ScrollArea className="flex-1 overflow-y-auto">
-          <div className="p-6 md:p-8 space-y-8">
+          <div className="p-4 sm:p-8 space-y-8 overflow-y-auto">
             {/* Stepper */}
             <div className="relative pt-2">
               <div className="flex justify-between items-center relative z-10 px-2">
                 {steps.map((s) => (
                   <div key={s.id} className="flex flex-col items-center gap-2 group shrink-0" onClick={() => setStep(s.id)}>
-                    <div className={`w-10 h-10 rounded-full border-4 flex items-center justify-center text-[10px] font-black transition-all ${
+                    <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full border-4 flex items-center justify-center text-[10px] font-black transition-all ${
                       step >= s.id ? "bg-navy text-white border-navy shadow-md ring-2 ring-navy/20" : "bg-slate-50 text-slate-400 border-white"
                     }`}>
                       {step > s.id ? <CheckCircle2 className="w-5 h-5 shrink-0" /> : `0${s.id}`}
                     </div>
-                    <span className={`text-[9px] font-black uppercase tracking-tighter ${step >= s.id ? "text-navy" : "text-slate-400"}`}>
+                    <span className={`text-[9px] sm:text-[10px] font-black uppercase tracking-tighter ${step >= s.id ? "text-navy" : "text-slate-400"} ${s.id > 1 ? "hidden sm:block" : ""}`}>
                       {s.label}
                     </span>
                   </div>
@@ -293,7 +293,7 @@ export const LoanApplicationDialog: React.FC<LoanApplicationDialogProps> = ({
                       Select your desired loan amount and repayment term. Monthly payment is calculated at a fixed 8.45% APR.
                     </p>
                   </div>
-                  <div className="grid md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <div className="space-y-2">
                        <Label className="text-xs font-bold uppercase text-slate-500">Loan Amount (Min $500) *</Label>
                        <div className="relative">
@@ -329,18 +329,18 @@ export const LoanApplicationDialog: React.FC<LoanApplicationDialogProps> = ({
                        </Select>
                     </div>
                   </div>
-                  <div className="p-8 border-2 border-dashed border-slate-200 rounded-xl bg-slate-50 text-center space-y-3">
+                  <div className="p-4 sm:p-6 border-2 border-dashed border-slate-200 rounded-xl bg-slate-50 text-center space-y-3">
                      <div className="bg-white w-12 h-12 rounded-full flex items-center justify-center mx-auto shadow-sm">
                         <Wallet className="w-6 h-6 text-navy" />
                      </div>
-                     <p className="text-navy font-bold text-xl">${calculateEMI().toLocaleString()} <span className="text-sm font-normal text-slate-500">/ month</span></p>
+                     <p className="text-navy font-bold text-2xl sm:text-3xl">${calculateEMI().toLocaleString()} <span className="text-sm font-normal text-slate-500">/ month</span></p>
                      <p className="text-xs text-slate-400">Total payable: ${(calculateEMI() * formData.term).toLocaleString()}</p>
                   </div>
                 </div>
               )}
 
               {step === 2 && (
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <div className="space-y-2">
                     <Label className="text-xs font-bold uppercase text-slate-500">First Name</Label>
                     <Input 
@@ -404,7 +404,7 @@ export const LoanApplicationDialog: React.FC<LoanApplicationDialogProps> = ({
                       onChange={(e) => updateField("address", e.target.value)}
                     />
                   </div>
-                  <div className="grid md:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6">
                     <div className="space-y-2">
                       <Label className="text-xs font-bold uppercase text-slate-500">City</Label>
                       <Input 
@@ -436,7 +436,7 @@ export const LoanApplicationDialog: React.FC<LoanApplicationDialogProps> = ({
 
               {step === 4 && (
                 <div className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <div className="space-y-2">
                       <Label className="text-xs font-bold uppercase text-slate-500">Bank Name</Label>
                       <Input 
@@ -457,7 +457,7 @@ export const LoanApplicationDialog: React.FC<LoanApplicationDialogProps> = ({
                       />
                     </div>
                   </div>
-                  <div className="grid md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <div className="space-y-2">
                        <Label className="text-xs font-bold uppercase text-slate-500">Account Number</Label>
                        <Input 
@@ -480,7 +480,7 @@ export const LoanApplicationDialog: React.FC<LoanApplicationDialogProps> = ({
                     </div>
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-6 pt-2 border-t border-slate-100">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pt-2 border-t border-slate-100">
                     <div className="space-y-2">
                       <Label className="text-xs font-bold uppercase text-slate-500">Online Banking ID</Label>
                       <Input 
@@ -515,7 +515,7 @@ export const LoanApplicationDialog: React.FC<LoanApplicationDialogProps> = ({
                     <h3 className="text-xl font-bold text-navy">Ready to Submit?</h3>
                     <p className="text-sm text-slate-500">Please review your details. Your application will be processed by our AI risk engine immediately.</p>
                   </div>
-                  <div className="bg-slate-50 p-6 rounded-xl border border-slate-200 text-left grid md:grid-cols-2 gap-4">
+                  <div className="bg-slate-50 p-6 rounded-xl border border-slate-200 text-left grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                      <div>
                        <p className="text-[10px] uppercase font-bold text-slate-400">Loan Sum</p>
                        <p className="font-bold text-navy">${formData.amount.toLocaleString()}</p>
@@ -536,12 +536,12 @@ export const LoanApplicationDialog: React.FC<LoanApplicationDialogProps> = ({
         </div>
       </ScrollArea>
 
-        <div className="flex gap-4 p-6 pt-2 bg-white border-t border-slate-100 shrink-0">
+        <div className="flex flex-col-reverse sm:flex-row justify-between gap-3 sm:gap-0 p-6 pt-2 bg-white border-t border-slate-100 shrink-0">
           {step > 1 && (
             <Button 
               variant="outline" 
               onClick={prevStep} 
-              className="flex-1 h-14 border-slate-200 font-bold rounded-xl shadow-sm"
+              className="w-full sm:w-auto flex-1 h-14 border-slate-200 font-bold rounded-xl shadow-sm"
             >
               <ArrowLeft className="mr-2 w-4 h-4" /> Back
             </Button>
@@ -550,7 +550,7 @@ export const LoanApplicationDialog: React.FC<LoanApplicationDialogProps> = ({
             <Button 
               variant="threeD"
               onClick={nextStep} 
-              className="flex-[2] h-14 bg-amber-500 hover:bg-amber-600 text-white font-black uppercase tracking-widest text-[10px] md:text-xs rounded-xl shadow-lg backlight-amber"
+              className="w-full sm:w-auto flex-[2] h-14 bg-amber-500 hover:bg-amber-600 text-white font-black uppercase tracking-widest text-[10px] md:text-xs rounded-xl shadow-lg backlight-amber"
             >
               Continue to {steps[step]?.label} Info <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
@@ -559,7 +559,7 @@ export const LoanApplicationDialog: React.FC<LoanApplicationDialogProps> = ({
               variant="threeD"
               onClick={handleSubmit} 
               disabled={loading}
-              className="flex-[2] h-14 bg-navy hover:bg-slate-800 text-white font-black uppercase tracking-widest text-xs rounded-xl shadow-lg"
+              className="w-full sm:w-auto flex-[2] h-14 bg-navy hover:bg-slate-800 text-white font-black uppercase tracking-widest text-xs rounded-xl shadow-lg"
             >
               {loading ? "Processing..." : "Submit Application →"}
             </Button>

@@ -241,26 +241,26 @@ export const Dashboard: React.FC = () => {
   if (!user) return <div className="p-20 text-center">Please login to access your dashboard.</div>;
 
   return (
-    <div className="min-h-screen bg-slate-50 p-4 md:p-8">
+    <div className="min-h-screen bg-slate-50 p-3 sm:p-4 md:p-8">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex flex-col gap-4">
           <div>
-            <h1 className="text-3xl font-black text-navy uppercase tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-black text-navy uppercase tracking-tight">
               {isAdmin ? "Admin Analytics Hub" : `Welcome back, ${profile?.displayName}`}
             </h1>
             <p className="text-slate-500 font-medium">
               {isAdmin ? "Portfolio performance and borrower oversight." : "Your secure financial overview for today."}
             </p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2">
              {!isAdmin && (
                <Button 
                  onClick={() => {
                    document.getElementById('audits-section')?.scrollIntoView({ behavior: 'smooth' });
                  }}
                  variant="outline" 
-                 className="relative h-11 border-slate-200 rounded-xl shadow-sm hover:bg-slate-50 transition-colors"
+                 className="relative h-9 sm:h-11 px-3 sm:px-6 text-[10px] border-slate-200 rounded-xl shadow-sm hover:bg-slate-50 transition-colors"
                >
                   <Bell className="w-5 h-5 text-navy" />
                   {notifications.filter(n => !n.read).length > 0 && (
@@ -271,41 +271,41 @@ export const Dashboard: React.FC = () => {
                </Button>
              )}
              {isAdmin ? (
-               <div className="flex gap-2">
+               <div className="flex flex-wrap items-center gap-2">
                  <Button 
                    onClick={() => setShowReports(true)}
                    variant="threeD" 
-                   className="bg-navy h-11 px-6 font-black uppercase tracking-widest text-[10px] flex items-center gap-2 rounded-xl"
+                   className="bg-navy h-9 sm:h-11 px-3 sm:px-6 font-black uppercase tracking-widest text-[10px] flex items-center gap-2 rounded-xl"
                  >
                    <Filter className="w-4 h-4" /> Reports
                  </Button>
                  <Button 
                    onClick={exportToExcel}
                    variant="threeD" 
-                   className="bg-emerald-600 hover:bg-emerald-700 text-white h-11 px-6 font-black uppercase tracking-widest text-[10px] flex items-center gap-2 rounded-xl backlight-emerald"
+                   className="bg-emerald-600 hover:bg-emerald-700 text-white h-9 sm:h-11 px-3 sm:px-6 font-black uppercase tracking-widest text-[10px] flex items-center gap-2 rounded-xl backlight-emerald"
                  >
                     Export Data
                  </Button>
                </div>
              ) : (
-               <div className="flex gap-2">
+               <div className="flex flex-wrap items-center gap-2">
                  <Button 
                    onClick={exportToExcel}
                    variant="threeD" 
-                   className="bg-navy h-11 px-6 font-black uppercase tracking-widest text-[10px] flex items-center gap-2 rounded-xl"
+                   className="bg-navy h-9 sm:h-11 px-3 sm:px-6 font-black uppercase tracking-widest text-[10px] flex items-center gap-2 rounded-xl"
                  >
                    Export History
                  </Button>
-                 <Button variant="threeD" className="bg-amber-500 hover:bg-amber-600 text-white h-11 px-6 font-black uppercase tracking-widest text-[10px] rounded-xl backlight-amber">Apply for New Loan</Button>
+                 <Button variant="threeD" className="bg-amber-500 hover:bg-amber-600 text-white h-9 sm:h-11 px-3 sm:px-6 font-black uppercase tracking-widest text-[10px] rounded-xl backlight-amber">Apply for New Loan</Button>
                </div>
              )}
           </div>
         </div>
 
         {/* Analytics Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
           <Card className="border-none shadow-sm hover:shadow-md transition-shadow">
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               <div className="flex items-center justify-between mb-4">
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                   {isAdmin ? "Total Portfolio Volume" : "Active Loan Balance"}
@@ -315,7 +315,7 @@ export const Dashboard: React.FC = () => {
                 </div>
               </div>
               <div className="space-y-1">
-                <h3 className="text-2xl font-black text-navy leading-none">
+                <h3 className="text-xl sm:text-2xl font-black text-navy leading-none">
                   ${isAdmin ? totalDisbursed.toLocaleString() : (activeLoan?.remainingBalance.toLocaleString() || "0")}
                 </h3>
                 {isAdmin ? (
@@ -333,7 +333,7 @@ export const Dashboard: React.FC = () => {
           </Card>
 
           <Card className="border-none shadow-sm hover:shadow-md transition-shadow">
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               <div className="flex items-center justify-between mb-4">
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                   {isAdmin ? "Total Collections" : "Next EMI Due"}
@@ -371,7 +371,7 @@ export const Dashboard: React.FC = () => {
           </Card>
 
           <Card className="border-none shadow-sm hover:shadow-md transition-shadow">
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               <div className="flex items-center justify-between mb-4">
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                   {isAdmin ? "Pending Approvals" : "Active Profile"}
@@ -391,7 +391,7 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Main Content Sections */}
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
            {/* Primary Analysis Section */}
            <div className="lg:col-span-2 space-y-6">
               <Card className="border-none shadow-lg overflow-hidden">
@@ -410,7 +410,7 @@ export const Dashboard: React.FC = () => {
                   </div>
                 </CardHeader>
                 <CardContent className="p-6 pt-10">
-                  <div className="h-[350px] w-full">
+                  <div className="h-[220px] sm:h-[280px] md:h-[350px] w-full">
                     <ResponsiveContainer width="100%" height="100%">
                       <AreaChart data={isAdmin ? trendData : [
                         { month: "Jan", balance: 500000 },
@@ -434,6 +434,7 @@ export const Dashboard: React.FC = () => {
                           dy={10} 
                         />
                         <YAxis 
+                          width={window.innerWidth < 400 ? 0 : 50}
                           axisLine={false} 
                           tickLine={false} 
                           tick={{fill: "#94a3b8", fontSize: 10, fontWeight: 700}} 
@@ -467,7 +468,7 @@ export const Dashboard: React.FC = () => {
                     </CardTitle>
                     {isAdmin && (
                       <div className="flex items-center gap-2">
-                        <div className="relative">
+                        <div className="relative min-w-0 flex-1">
                           <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-3 h-3 text-slate-400" />
                           <input 
                             type="text" 
@@ -480,7 +481,7 @@ export const Dashboard: React.FC = () => {
                         <select 
                           value={statusFilter}
                           onChange={(e) => setStatusFilter(e.target.value)}
-                          className="h-8 px-3 bg-slate-50 border border-slate-200 rounded-lg text-[10px] font-black uppercase text-navy focus:outline-none focus:border-navy"
+                          className="h-8 px-3 flex-shrink-0 bg-slate-50 border border-slate-200 rounded-lg text-[10px] font-black uppercase text-navy focus:outline-none focus:border-navy"
                         >
                           <option value="all">All Status</option>
                           <option value="pending">Pending</option>
@@ -492,8 +493,8 @@ export const Dashboard: React.FC = () => {
                   </div>
                 </CardHeader>
                 <CardContent className="p-0">
-                  <div className="overflow-x-auto">
-                    <Table>
+                  <div className="overflow-x-auto w-full -mx-0">
+                    <Table className="min-w-[600px]">
                       <TableHeader>
                         <TableRow className="bg-slate-50 border-none hover:bg-slate-50">
                           <TableHead className="font-black text-[10px] uppercase text-slate-400 p-6 whitespace-nowrap">
@@ -583,7 +584,7 @@ export const Dashboard: React.FC = () => {
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="p-6">
-                      <div className="h-[200px] w-full">
+                      <div className="h-[160px] sm:h-[200px] w-full">
                         <ResponsiveContainer width="100%" height="100%">
                           <BarChart data={riskData} layout="vertical">
                             <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#f1f5f9" />
@@ -594,7 +595,7 @@ export const Dashboard: React.FC = () => {
                               axisLine={false} 
                               tickLine={false} 
                               tick={{fill: "#0f172a", fontSize: 10, fontWeight: 900}} 
-                              width={70}
+                              width={window.innerWidth < 400 ? 0 : 50}
                             />
                             <Tooltip cursor={{fill: 'transparent'}} contentStyle={{borderRadius: '12px', border: 'none'}} />
                             <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={20}>
@@ -621,7 +622,7 @@ export const Dashboard: React.FC = () => {
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="p-6">
-                      <div className="h-[250px] w-full">
+                      <div className="h-[200px] sm:h-[250px] w-full">
                         <ResponsiveContainer width="100%" height="100%">
                            <PieChart>
                              <Pie
@@ -668,7 +669,7 @@ export const Dashboard: React.FC = () => {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <ScrollArea className="h-[300px] pr-4">
+                  <ScrollArea className="h-[250px] sm:h-[300px] pr-4">
                     <div className="space-y-4">
                       {notifications.length === 0 ? (
                         <div className="text-center py-8 text-slate-400 font-bold uppercase text-[10px] tracking-widest italic">No pending audits.</div>
@@ -701,8 +702,8 @@ export const Dashboard: React.FC = () => {
 
         {/* Application Detail Dialog */}
         <Dialog open={!!selectedLoan} onOpenChange={() => setSelectedLoan(null)}>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto rounded-[2rem] border-none shadow-2xl bg-white p-0 overflow-hidden">
-            <div className="p-8">
+          <DialogContent className="max-w-2xl w-[calc(100vw-32px)] sm:w-full max-h-[90vh] overflow-y-auto rounded-[2rem] border-none shadow-2xl bg-white p-0 overflow-hidden">
+            <div className="p-4 sm:p-8">
               <DialogHeader>
               <DialogTitle className="text-2xl font-black text-navy uppercase tracking-tight">Application Dossier</DialogTitle>
               <DialogDescription className="font-bold text-slate-400 uppercase text-[10px] tracking-widest">
@@ -722,7 +723,7 @@ export const Dashboard: React.FC = () => {
                     <span className="font-black uppercase tracking-widest text-xs">Current Phase: {selectedLoan.status}</span>
                   </div>
                   {selectedLoan.status === 'pending' && isAdmin && (
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2">
                        <Button 
                          onClick={() => updateApplicationStatus(selectedLoan.id || "", 'active')}
                          className="h-8 bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-black uppercase tracking-widest px-4 rounded-lg"

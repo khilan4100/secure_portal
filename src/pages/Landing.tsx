@@ -31,7 +31,7 @@ export const Landing: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-50 overflow-x-hidden">
       {/* Hero Section */}
-      <header className="bg-navy py-32 px-4 text-center relative overflow-hidden">
+      <header className="bg-navy py-16 sm:py-24 md:py-32 px-4 text-center relative overflow-hidden">
         {/* Animated Background Elements */}
         <motion.div 
           animate={{ 
@@ -67,21 +67,21 @@ export const Landing: React.FC = () => {
             Digital Finance ✨ Redefined
           </motion.div>
           
-          <h1 className="text-4xl sm:text-5xl md:text-8xl font-black text-white mb-8 tracking-tighter leading-[0.9]">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black text-white mb-8 tracking-tighter leading-[0.9]">
             FAST LOANS <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-white to-amber-200">
               SECURE FUTURE.
             </span>
           </h1>
           
-          <p className="text-xl text-slate-300 mb-12 max-w-2xl mx-auto font-medium leading-relaxed">
+          <p className="text-base sm:text-xl text-slate-300 mb-8 sm:mb-12 max-w-2xl mx-auto font-medium leading-relaxed">
             Experience the next generation of lending. Zero friction, military-grade security, and transparent rates that work for you.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 w-full sm:w-auto justify-center items-center">
             <LoanApplicationDialog 
               trigger={
-                <Button variant="threeD" size="lg" className="bg-blue-600 hover:bg-blue-500 text-white px-10 py-8 text-xl font-black h-auto rounded-2xl backlight-blue">
+                <Button variant="threeD" size="lg" className="bg-blue-600 hover:bg-blue-500 text-white w-full sm:w-auto px-6 sm:px-10 py-5 sm:py-8 text-base sm:text-xl font-black h-auto rounded-2xl backlight-blue">
                   APPLY NOW <ArrowRight className="ml-3 w-6 h-6" />
                 </Button>
               }
@@ -90,7 +90,7 @@ export const Landing: React.FC = () => {
             <Dialog>
               <DialogTrigger 
                 render={
-                  <Button size="lg" variant="ghost" className="text-white border-2 border-white/20 hover:bg-white/10 hover:border-white/40 px-10 py-8 text-xl font-bold h-auto rounded-2xl transition-all backdrop-blur-sm">
+                  <Button size="lg" variant="ghost" className="text-white border-2 border-white/20 hover:bg-white/10 hover:border-white/40 w-full sm:w-auto px-6 sm:px-10 py-5 sm:py-8 text-base sm:text-xl font-bold h-auto rounded-2xl transition-all backdrop-blur-sm">
                     VIEW RATES
                   </Button>
                 }
@@ -108,7 +108,7 @@ export const Landing: React.FC = () => {
                   </DialogHeader>
                 </div>
                 
-                <div className="p-8 space-y-6">
+                <div className="p-8 space-y-6 max-h-[85vh] overflow-y-auto">
                     {[
                       { icon: ShieldCheck, type: "Personal Loans", rate: "8.45% - 12.9%", color: "blue", desc: "Unsecured credit for verified professionals" },
                       { icon: Building2, type: "Business Capital", rate: "9.0% - 13.5%", color: "amber", desc: "Scale your operations with flexible tenure" },
@@ -156,7 +156,7 @@ export const Landing: React.FC = () => {
       </header>
 
       {/* Loan Calculator */}
-      <section className="py-20 px-4 -mt-20 relative z-20">
+      <section className="py-12 sm:py-20 px-3 sm:px-4 -mt-10 sm:-mt-20 relative z-20">
         <div className="container mx-auto max-w-5xl">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -166,7 +166,7 @@ export const Landing: React.FC = () => {
           >
             <Card className="shadow-[0_40px_100px_-20px_rgba(0,0,0,0.3)] border-none overflow-hidden glass-card rounded-[2.5rem]">
               <div className="grid md:grid-cols-2">
-                <div className="p-10 md:p-16">
+                <div className="p-6 sm:p-10 md:p-16">
                   <div className="flex items-center gap-3 text-navy mb-8">
                     <div className="p-3 bg-navy text-white rounded-2xl shadow-lg">
                       <Calculator className="w-6 h-6" />
@@ -234,13 +234,13 @@ export const Landing: React.FC = () => {
                   </div>
                 </div>
                 
-                <div className="bg-navy p-10 md:p-16 text-white flex flex-col justify-center relative overflow-hidden">
+                <div className="bg-navy p-6 sm:p-10 md:p-16 text-white flex flex-col justify-center relative overflow-hidden">
                   <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32 blur-3xl" />
                   
                   <div className="text-center space-y-10 relative z-10">
                     <div>
                       <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.3em] mb-4">Estimated EMI</p>
-                      <p className="text-6xl md:text-7xl font-black tracking-tighter text-amber-400 drop-shadow-2xl">
+                      <p className="text-5xl sm:text-6xl md:text-7xl font-black tracking-tighter text-amber-400 drop-shadow-2xl">
                         ${Math.round(monthlyPayment).toLocaleString()}
                       </p>
                     </div>
@@ -266,7 +266,7 @@ export const Landing: React.FC = () => {
                               setAmount(500);
                             }
                           }}
-                          className="w-full h-16 bg-white text-navy hover:bg-slate-100 font-black uppercase tracking-widest text-xs rounded-2xl shadow-[0_10px_30px_-5px_rgba(255,255,255,0.3)]"
+                          className="w-full h-12 sm:h-16 bg-white text-navy hover:bg-slate-100 font-black uppercase tracking-widest text-xs rounded-2xl shadow-[0_10px_30px_-5px_rgba(255,255,255,0.3)]"
                         >
                           Check Eligibility
                         </Button>
@@ -281,12 +281,12 @@ export const Landing: React.FC = () => {
       </section>
 
       {/* Modern Features Grid */}
-      <section className="py-32 container mx-auto px-4">
+      <section className="py-16 sm:py-32 container mx-auto px-4">
         <div className="text-center mb-24">
           <motion.h2 
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            className="text-4xl md:text-6xl font-black text-navy mb-6 tracking-tighter uppercase"
+            className="text-3xl sm:text-4xl md:text-6xl font-black text-navy mb-6 tracking-tighter uppercase"
           >
             Institutional <br /> 
             <span className="text-blue-600">Grade Security.</span>
@@ -294,7 +294,7 @@ export const Landing: React.FC = () => {
           <div className="w-24 h-2 bg-amber-500 mx-auto rounded-full" />
         </div>
 
-        <div className="grid md:grid-cols-3 gap-12">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-12">
           {[
             { icon: ShieldCheck, title: "AES-256 Shield", desc: "Your data is encrypted using military-grade standards before it ever reaches our servers." },
             { icon: Clock, title: "Bolt Checkout", desc: "Automated underwriting engine processes applications in under 30 minutes, 24/7." },
@@ -306,7 +306,7 @@ export const Landing: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
               whileHover={{ y: -10 }}
-              className="group p-10 rounded-[2.5rem] bg-white border border-slate-100 shadow-xl hover:shadow-2xl transition-all"
+              className="group p-6 sm:p-10 rounded-2xl sm:rounded-[2.5rem] bg-white border border-slate-100 shadow-xl hover:shadow-2xl transition-all"
             >
               <div className="w-16 h-16 bg-navy text-white rounded-2xl flex items-center justify-center mb-8 shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-transform">
                 <feature.icon className="w-8 h-8" />
@@ -327,16 +327,16 @@ export const Landing: React.FC = () => {
         animate={{ scale: 1, rotate: 0 }}
         whileHover={{ scale: 1.1, rotate: 5 }}
         whileTap={{ scale: 0.9 }}
-        className="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-[0_10px_40px_-5px_rgba(34,197,94,0.5)] hover:shadow-[0_15px_50px_-5px_rgba(34,197,94,0.7)] z-50 flex items-center gap-2 font-black uppercase tracking-widest text-[10px] border-b-4 border-green-700 active:border-b-0 active:translate-y-1 transition-all"
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 bg-green-500 text-white p-4 rounded-full shadow-[0_10px_40px_-5px_rgba(34,197,94,0.5)] hover:shadow-[0_15px_50px_-5px_rgba(34,197,94,0.7)] z-50 flex items-center gap-2 font-black uppercase tracking-widest text-[10px] border-b-4 border-green-700 active:border-b-0 active:translate-y-1 transition-all"
       >
         <span className="text-lg">💬</span>
         <span className="hidden md:inline">Contact Support</span>
       </motion.a>
       
       {/* Footer */}
-      <footer className="bg-navy text-white py-12 mt-20">
+      <footer className="bg-navy text-white py-10 sm:py-12 mt-10 sm:mt-20">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-12 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
             <div>
               <h4 className="text-xl font-bold mb-4">Secure Lend</h4>
               <p className="text-slate-400">Leading the future of digital financing with security at our core. Registered NBFC in Ahmedabad, Gujarat.</p>
